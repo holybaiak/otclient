@@ -4,7 +4,6 @@ local ProgressCallback = {
 }
 
 cooldownWindow = nil
-cooldownButton = nil
 contentsPanel = nil
 cooldownPanel = nil
 lastPlayer = nil
@@ -20,10 +19,6 @@ function init()
         onSpellCooldown = onSpellCooldown
     })
 
-    cooldownButton = modules.client_topmenu.addRightGameToggleButton('cooldownButton', tr('Cooldowns'),
-                                                                     '/images/topbuttons/cooldowns', toggle)
-    cooldownButton:setOn(true)
-    cooldownButton:hide()
 
     cooldownWindow = g_ui.loadUI('cooldown')
     cooldownWindow:disableResize()
@@ -51,7 +46,6 @@ function terminate()
     })
 
     cooldownWindow:destroy()
-    cooldownButton:destroy()
 end
 
 function loadIcon(iconId)
@@ -84,30 +78,11 @@ function loadIcon(iconId)
     return icon
 end
 
-function onMiniWindowOpen()
-    cooldownButton:setOn(true)
-end
-
-function onMiniWindowClose()
-    cooldownButton:setOn(false)
-end
-
-function toggle()
-    if cooldownButton:isOn() then
-        cooldownWindow:close()
-        cooldownButton:setOn(false)
-    else
-        cooldownWindow:open()
-        cooldownButton:setOn(true)
-    end
-end
 
 function online()
     if g_game.getFeature(GameSpellList) then
         cooldownWindow:setupOnStart() -- load character window configuration
-        cooldownButton:show()
     else
-        cooldownButton:hide()
         cooldownWindow:close()
     end
 

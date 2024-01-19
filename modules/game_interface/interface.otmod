@@ -14,13 +14,12 @@ Module
     - game_console
     - game_actionbar
     - game_outfit
-    - game_healthinfo
     - game_skills
     - game_inventory
-    - game_combatcontrols
     - game_containers
     - game_viplist
     - game_battle
+    - game_healthinfo
     - game_minimap
     - game_npctrade
     - game_textwindow
@@ -29,7 +28,6 @@ Module
     - game_playerdeath
     - game_playermount
     - game_ruleviolation
-    - game_market
     - game_spelllist
     - game_cooldown
     - game_modaldialog

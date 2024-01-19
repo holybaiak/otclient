@@ -179,25 +179,7 @@ function toggle()
     end
 end
 
-function toggleIcon(bitChanged)
-    local content = healthInfoWindow:recursiveGetChildById('conditionPanel')
 
-    local icon = content:getChildById(Icons[bitChanged].id)
-    if icon then
-        icon:destroy()
-    else
-        icon = loadIcon(bitChanged)
-        icon:setParent(content)
-    end
-end
-
-function loadIcon(bitChanged)
-    local icon = g_ui.createWidget('ConditionWidget', content)
-    icon:setId(Icons[bitChanged].id)
-    icon:setImageSource(Icons[bitChanged].path)
-    icon:setTooltip(Icons[bitChanged].tooltip)
-    return icon
-end
 
 function online()
     healthInfoWindow:setupOnStart() -- load character window configuration
@@ -205,7 +187,6 @@ end
 
 function offline()
     healthInfoWindow:setParent(nil, true)
-    healthInfoWindow:recursiveGetChildById('conditionPanel'):destroyChildren()
 end
 
 -- hooked events
@@ -235,31 +216,6 @@ function onLevelChange(localPlayer, value, percent)
     experienceBar:setPercent(percent)
 end
 
-function onSoulChange(localPlayer, soul)
-    soulLabel:setText(tr('Soul') .. ': ' .. soul)
-end
-
-function onFreeCapacityChange(player, freeCapacity)
-    capLabel:setText(tr('Cap') .. ': ' .. freeCapacity)
-end
-
-function onStatesChange(localPlayer, now, old)
-    if now == old then
-        return
-    end
-
-    local bitsChanged = bit.bxor(now, old)
-    for i = 1, 32 do
-        local pow = math.pow(2, i - 1)
-        if pow > bitsChanged then
-            break
-        end
-        local bitChanged = bit.band(bitsChanged, pow)
-        if bitChanged ~= 0 then
-            toggleIcon(bitChanged)
-        end
-    end
-end
 
 -- personalization functions
 function hideLabels()

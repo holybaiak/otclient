@@ -3,7 +3,7 @@ local binaryTree = {}    -- BST
 local battleButtons = {} -- map of creature id
 
 -- Global variables that will inherit from init
-local battleWindow, battleButton, battlePanel, mouseWidget, filterPanel, toggleFilterButton
+local battleWindow, battleButton, battlePanel, mouseWidget, filterPanel
 local lastBattleButtonSwitched, lastCreatureSelected
 
 -- Hide Buttons ("hidePlayers", "hideNPCs", "hideMonsters", "hideSkulls", "hideParty")
@@ -79,7 +79,6 @@ function init() -- Initiating the module (load)
 
     battlePanel = battleWindow:recursiveGetChildById('battlePanel')
     filterPanel = battleWindow:recursiveGetChildById('filterPanel')
-    toggleFilterButton = battleWindow:recursiveGetChildById('toggleFilterButton')
 
     -- Hide/Show Filter Options
     local settings = g_settings.getNode('BattleList')
@@ -87,31 +86,7 @@ function init() -- Initiating the module (load)
         hideFilterPanel()
     end
 
-    -- Adding Filter options
-    local options = { 'hidePlayers', 'hideNPCs', 'hideMonsters', 'hideSkulls', 'hideParty' }
-    for i, v in ipairs(options) do
-        hideButtons[v] = battleWindow:recursiveGetChildById(v)
-    end
 
-    -- Adding SortType and SortOrder options
-    local sortTypeOptions = { 'Name', 'Distance', 'Age', 'Health' }
-    local sortOrderOptions = { 'Asc.', 'Desc.' }
-
-    local sortTypeBox = battleWindow:recursiveGetChildById('sortTypeBox')
-    for i, v in ipairs(sortTypeOptions) do
-        sortTypeBox:addOption(v, v:lower())
-    end
-
-    local sortOrderBox = battleWindow:recursiveGetChildById('sortOrderBox')
-    for i, v in ipairs(sortOrderOptions) do
-        sortOrderBox:addOption(v, v:lower())
-    end
-    sortTypeBox:setCurrentOptionByData(getSortType())
-    sortTypeBox.onOptionChange = onChangeSortType
-    sortOrderBox:setCurrentOptionByData(getSortOrder())
-    sortOrderBox.onOptionChange = onChangeSortOrder
-
-    -- Adding mouse Widget
     mouseWidget = g_ui.createWidget('UIButton')
     mouseWidget:setVisible(false)
     mouseWidget:setFocusable(false)
@@ -654,16 +629,12 @@ end
 function hideFilterPanel() -- Hide Filter panel
     filterPanel.originalHeight = filterPanel:getHeight()
     filterPanel:setHeight(0)
-    toggleFilterButton:getParent():setMarginTop(0)
-    toggleFilterButton:setImageClip(torect('0 0 21 12'))
     setHidingFilters(true)
     filterPanel:setVisible(false)
 end
 
 function showFilterPanel() -- Show Filter panel
-    toggleFilterButton:getParent():setMarginTop(5)
     filterPanel:setHeight(filterPanel.originalHeight)
-    toggleFilterButton:setImageClip(torect('21 0 21 12'))
     setHidingFilters(false)
     filterPanel:setVisible(true)
 end
@@ -1074,7 +1045,6 @@ function terminate() -- Terminating the Module (unload)
     battleWindow = nil
     mouseWidget = nil
     filterPanel = nil
-    toggleFilterButton = nil
 
     g_keyboard.unbindKeyDown('Ctrl+B')
 

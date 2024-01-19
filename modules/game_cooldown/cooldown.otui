@@ -27,7 +27,6 @@ MiniWindow
   height: 82
   icon: /images/topbuttons/cooldowns
   @onOpen: modules.game_cooldown.onMiniWindowOpen()
-  @onClose: modules.game_cooldown.onMiniWindowClose()
   &save: true
 
   MiniWindowContents
