@@ -6,9 +6,9 @@ Services = {
     --updater = "http://localhost/api/updater.php",
 }
 
-g_app.setName("Holy Baiak");
-g_app.setCompactName("holybaiak");
-g_app.setOrganizationName("holy team");
+g_app.setName("OTClient - Redemption");
+g_app.setCompactName("otclient");
+g_app.setOrganizationName("otcr");
 
 g_app.hasUpdater = function()
     return (Services.updater and Services.updater ~= "" and g_modules.getModule("updater"))
