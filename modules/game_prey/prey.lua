@@ -163,7 +163,7 @@ end
 function check()
     if g_game.getFeature(GamePrey) then
         if not preyButton then
-            preyButton = modules.client_topmenu.addRightGameToggleButton('preyButton', tr('Prey Dialog'),
+            preyButton = modules.client_topmenu.addRightGameButton('preyButton', tr('Prey Dialog'),
                                                                          '/images/topbuttons/prey_window', toggle)
         end
         if not preyTrackerButton then

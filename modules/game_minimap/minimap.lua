@@ -29,7 +29,7 @@ local function updateCameraPosition()
     minimapWidget:setCrossPosition(pos)
 end
 
-local function toggle()
+function toggle()
     if minimapButton:isOn() then
         controller.ui:close()
     else

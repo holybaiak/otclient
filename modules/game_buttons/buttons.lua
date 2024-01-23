@@ -9,10 +9,27 @@ function init()
   if not buttonsWindow.forceOpen or not contentsPanel.buttons then
     buttonsWindow:close()
   end
+  updateOrder()
 end
 
 function terminate()
   buttonsWindow:destroy()
+end
+
+function open()
+  buttonsWindow:open()
+end
+
+function hide()
+  buttonsWindow:close()
+end
+
+function toggle()
+  if buttonsWindow:isVisible() then
+    	hide()
+  else
+	    open()
+   end
 end
 
 function takeButtons(buttons)

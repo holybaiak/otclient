@@ -44,6 +44,7 @@ end
 
 function hide()
     background:hide()
+    modules.client_topmenu.getTopMenu():setHeight(0)
 end
 
 function show()
@@ -52,6 +53,7 @@ end
 
 function hideVersionLabel()
     background:getChildById('clientVersionLabel'):hide()
+    modules.client_topmenu.getTopMenu():setHeight(0)
 end
 
 function setVersionText(text)

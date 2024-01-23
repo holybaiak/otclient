@@ -1,40 +1,78 @@
-HealthBar < ProgressBar
+HealthBar < UIProgressBar
   id: healthBar
-  background-color: #ff4444
-  anchors.top: parent.top
-  anchors.left: parent.left
-  anchors.right: parent.right
-  margin: 1
+  width: 110
+  height: 16
+  background-color: red
+  border: 1 black
+  font: verdana-11px-rounded
+  text-offset: 0 2
+  margin: 2 
 
-ManaBar < ProgressBar
+ManaBar < UIProgressBar
   id: manaBar
-  background-color: #4444ff
-  anchors.top: prev.bottom
-  anchors.left: parent.left
-  anchors.right: parent.right
-  margin: 1
-  margin-top: 3
+  width: 110
+  height: 16
+  background-color: blue
+  border: 1 black
+  font: verdana-11px-rounded
+  text-offset: 0 2
+  margin: 2 
 
-ExperienceBar < ProgressBar
-  id: experienceBar
-  background-color: #B6E866
-  anchors.top: prev.bottom
-  anchors.left: parent.left
-  anchors.right: parent.right
-  margin: 1
-  margin-top: 3
 
 MiniWindow
   icon: /images/topbuttons/healthinfo
   id: healthInfoWindow
-  !text: tr('Health Info')
-  height: 90
+  !text: ('HealthInfo')
+  height: 80
   @onOpen: modules.game_healthinfo.onMiniWindowOpen()
   @onClose: modules.game_healthinfo.onMiniWindowClose()
   &save: true
 
   MiniWindowContents
     HealthBar
+      anchors.left: parent.left
+      anchors.top: parent.top
+      margin-left: 25
+      margin-top: 5
+
     ManaBar
-    ExperienceBar
+      anchors.left: parent.left
+      anchors.top: parent.top
+      margin-left: 25
+      margin-top: 30
+
+  Label
+    id: texto
+    anchors.top: parent.top
+    margin-top: 28
+    margin-right: 15
+    anchors.right: parent.right
+
+  Label
+    id: texto2
+    anchors.top: parent.top
+    anchors.right: parent.right   
+    margin-top: 52
+    margin-right: 15
+
+  UIWidget
+    id: imgheal
+    image-source: /images/ui/heal
+    size: 15 15
+    anchors.top: parent.top
+    anchors.left: parent.left  
+    margin-top: 28
+    margin-left: 5
+
+  UIWidget
+    id: imgMana
+    image-source: /images/ui/mana
+    size: 17 17
+    anchors.top: parent.top
+    anchors.left: parent.left  
+    margin-top: 52
+    margin-left: 5  
+ 
+
+ 
 
