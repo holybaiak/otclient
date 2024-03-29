@@ -39,7 +39,6 @@ public:
     virtual void draw(const Point& /*dest*/, bool drawThings = true, LightView* /*lightView*/ = nullptr) {}
 
     LuaObjectPtr attachedObjectToLuaObject() override { return asLuaObject(); }
-    bool isThing() override { return true; }
 
     virtual void setId(uint32_t /*id*/) {}
     virtual void setPosition(const Position& position, uint8_t stackPos = 0, bool hasElevation = false);
@@ -183,20 +182,12 @@ public:
     }
 
     bool isMarked() { return m_markedColor != Color::white; }
-    void setMarked(const Color& color) { if (m_markedColor != color) m_markedColor = color; }
-
-    const Color& getHighlightColor() {
-        if (m_highlightColor == Color::white)
-            return Color::white;
-
-        m_highlightColor.setAlpha(0.1f + std::abs(500 - g_clock.millis() % 1000) / 1000.0f);
-        return m_highlightColor;
-    }
-
-    bool isHighlighted() { return m_highlightColor != Color::white; }
-    void setHighlight(const Color& color) { if (m_highlightColor != color) m_highlightColor = color; }
+    void setMarkColor(const Color& color) { if (m_markedColor != color) m_markedColor = color; }
 
     bool isHided() { return isOwnerHidden(); }
+    void onStartAttachEffect(const AttachedEffectPtr& effect) override;
+    void onDispatcherAttachEffect(const AttachedEffectPtr& effect) override;
+    void onStartDetachEffect(const AttachedEffectPtr& effect) override;
 
 protected:
     void setAttachedEffectDirection(Otc::Direction dir) const
@@ -218,18 +209,12 @@ protected:
     DrawConductor m_drawConductor{ false, DrawOrder::THIRD };
 
     Color m_markedColor{ Color::white };
-    Color m_highlightColor{ Color::white };
 
     // Shader
     PainterShaderProgramPtr m_shader;
     std::function<void()> m_shaderAction{ nullptr };
 
 private:
-    void lua_setMarked(std::string_view color) { setMarked(Color(color)); }
-    void lua_setHighlight(std::string_view color) { setHighlight(Color(color)); }
-
     bool m_canDraw{ true };
-
-    friend class Client;
 };
 #pragma pack(pop)

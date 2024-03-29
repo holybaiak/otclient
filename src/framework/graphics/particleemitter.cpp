@@ -85,15 +85,11 @@ void ParticleEmitter::update(float elapsedTime, const ParticleSystemPtr& system)
             const float pAccelerationAngle = stdext::random_range(type->pMinAccelerationAngle, type->pMaxAccelerationAngle);
             const PointF pAcceleration(pAccelerationAbs * std::cos(pAccelerationAngle), pAccelerationAbs * std::sin(pAccelerationAngle));
 
-            const float multiplier = stdext::random_range(type->pRandomSizeMultiplier.x, type->pRandomSizeMultiplier.y);
-            Size startSize = type->pStartSize * multiplier;
-            Size finalSize = type->pFinalSize * multiplier;
-
-            system->addParticle(std::make_shared<Particle>(pPosition, startSize, finalSize,
+            system->addParticle(std::make_shared<Particle>(pPosition, type->pStartSize, type->pFinalSize,
                                 pVelocity, pAcceleration,
                                 pDuration, type->pIgnorePhysicsAfter,
                                 type->pColors, type->pColorsStops,
-                                type->pCompositionMode, type->pTexture, type->pAnimatedTexture));
+                                type->pCompositionMode, type->pTexture));
         }
     }
 

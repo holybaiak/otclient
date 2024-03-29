@@ -186,6 +186,9 @@
     <ClCompile Include="..\src\framework\graphics\framebuffer.cpp">
       <Filter>Source Files\framework\graphics</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\framework\graphics\framebuffermanager.cpp">
+      <Filter>Source Files\framework\graphics</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\framework\graphics\graphics.cpp">
       <Filter>Source Files\framework\graphics</Filter>
     </ClCompile>
@@ -426,6 +429,9 @@
     <ClCompile Include="..\src\client\luafunctions.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
+    <ClCompile Include="..\src\client\luavaluecasts.cpp">
+      <Filter>Source Files\client</Filter>
+    </ClCompile>
     <ClCompile Include="..\src\client\map.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
@@ -457,6 +463,9 @@
       <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="..\src\client\protocolgamesend.cpp">
+      <Filter>Source Files\client</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\client\shadermanager.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
     <ClCompile Include="..\src\client\spritemanager.cpp">
@@ -543,25 +552,8 @@
     <ClCompile Include="..\src\client\position.cpp">
       <Filter>Source Files\client</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\client\uigraph.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\client\luavaluecasts_client.cpp">
-      <Filter>Source Files\client</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\framework\graphics\shadermanager.cpp">
-      <Filter>Source Files\framework\graphics</Filter>
-    </ClCompile>
-    <ClCompile Include="..\src\framework\ui\uiqrcode.cpp">
-      <Filter>Source Files\framework\ui</Filter>
-    <ClCompile Include="..\src\framework\net\httplogin.cpp">
-      <Filter>Source Files\framework\net</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\src\framework\config.h">
-      <Filter>Header Files\framework</Filter>
-    </ClInclude>
     <ClInclude Include="..\src\framework\const.h">
       <Filter>Header Files\framework</Filter>
     </ClInclude>
@@ -647,6 +639,9 @@
       <Filter>Header Files\framework\graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\src\framework\graphics\framebuffer.h">
+      <Filter>Header Files\framework\graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\framework\graphics\framebuffermanager.h">
       <Filter>Header Files\framework\graphics</Filter>
     </ClInclude>
     <ClInclude Include="..\src\framework\graphics\glutil.h">
@@ -943,6 +938,9 @@
     <ClInclude Include="..\src\client\localplayer.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\client\luavaluecasts.h">
+      <Filter>Header Files\client</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\client\map.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
@@ -968,6 +966,9 @@
       <Filter>Header Files\client</Filter>
     </ClInclude>
     <ClInclude Include="..\src\client\protocolgame.h">
+      <Filter>Header Files\client</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\client\shadermanager.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
     <ClInclude Include="..\src\client\spritemanager.h">
@@ -1018,6 +1019,9 @@
     <ClInclude Include="..\src\client\animator.h">
       <Filter>Header Files\client</Filter>
     </ClInclude>
+    <ClInclude Include="..\src\client\config.h">
+      <Filter>Header Files\client</Filter>
+    </ClInclude>
     <ClInclude Include="..\src\framework\graphics\drawpoolmanager.h">
       <Filter>Header Files\framework\graphics</Filter>
     </ClInclude>
@@ -1065,20 +1069,6 @@
     </ClInclude>
     <ClInclude Include="..\src\framework\stdext\qrcodegen.h">
       <Filter>Header Files\framework\stdext</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\uigraph.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\client\luavaluecasts_client.h">
-      <Filter>Header Files\client</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\framework\graphics\shadermanager.h">
-      <Filter>Header Files\framework\graphics</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\framework\ui\uiqrcode.h">
-      <Filter>Header Files\framework\ui</Filter>
-    <ClInclude Include="..\src\framework\net\httplogin.h">
-      <Filter>Header Files\framework\net</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

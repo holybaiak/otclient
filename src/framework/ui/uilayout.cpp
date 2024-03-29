@@ -64,7 +64,7 @@ void UILayout::updateLater()
         return;
 
     auto self = static_self_cast<UILayout>();
-    g_dispatcher.deferEvent([self] {
+    g_dispatcher.addEvent([self] {
         self->m_updateScheduled = false;
         self->update();
     });

@@ -30,7 +30,7 @@ void UICreature::drawSelf(DrawPoolType drawPane)
     UIWidget::drawSelf(drawPane);
 
     if (m_creature) {
-        m_creature->setMarked(m_imageColor);
+        m_creature->setMarkColor(m_imageColor);
         m_creature->draw(getPaddingRect(), m_creatureSize);
     }
 }
@@ -63,6 +63,14 @@ void UICreature::onStyleApply(const std::string_view styleName, const OTMLNodePt
             getOutfit().setLegs(node->value<int>());
         } else if (node->tag() == "outfit-feet") {
             getOutfit().setFeet(node->value<int>());
+        } else if (node->tag() == "outfit-wings") {
+            auto outfit = getOutfit();
+            outfit.setWings(node->value<int>());
+            setOutfit(outfit);
+        } else if (node->tag() == "outfit-aura") {
+            auto outfit = getOutfit();
+            outfit.setAura(node->value<int>());
+            setOutfit(outfit);
         }
     }
 }

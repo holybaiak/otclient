@@ -439,11 +439,6 @@ bool ResourceManager::isFileType(const std::string& filename, const std::string&
     return false;
 }
 
-std::string ResourceManager::getFileName(const std::string& filePath)
-{
-    return std::filesystem::path(filePath).filename().string();
-}
-
 ticks_t ResourceManager::getFileTime(const std::string& filename)
 {
     return g_platform.getFileModificationTime(getRealPath(filename));
@@ -569,9 +564,9 @@ std::string ResourceManager::fileChecksum(const std::string& path) {
     return checksum;
 }
 
-std::unordered_map<std::string, std::string> ResourceManager::filesChecksums()
+stdext::map<std::string, std::string> ResourceManager::filesChecksums()
 {
-    std::unordered_map<std::string, std::string> ret;
+    stdext::map<std::string, std::string> ret;
     auto files = listDirectoryFiles("/", true, false, true);
     for (auto it = files.rbegin(); it != files.rend(); ++it) {
         const auto& filePath = *it;
@@ -726,12 +721,4 @@ bool ResourceManager::launchCorrect(std::vector<std::string>& args) { // curentl
     g_platform.spawnProcess(binary.string(), args);
     return true;
 #endif
-}
-
-std::string ResourceManager::createArchive(const std::unordered_map<std::string, std::string>& files) { return ""; }
-
-std::unordered_map<std::string, std::string> ResourceManager::decompressArchive(std::string dataOrPath)
-{
-    std::unordered_map<std::string, std::string> ret;
-    return ret;
 }

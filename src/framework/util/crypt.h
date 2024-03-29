@@ -22,8 +22,6 @@
 
 #pragma once
 
-#include "../global.h"
-
 #include <string>
 #include <stduuid/uuid.h>
 
@@ -55,10 +53,6 @@ public:
     int rsaGetSize();
 
     std::string crc32(const std::string& decoded_string, bool upperCase);
-    std::string sha1Encrpyt(const std::string& input);
-
-protected:
-    void sha1Block(uint8_t* block, uint32_t* H);
 
 private:
     std::string _encrypt(const std::string& decrypted_string, bool useMachineUUID);

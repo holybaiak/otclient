@@ -24,7 +24,6 @@
 
 #include <string>
 #include <vector>
-#include <framework/core/inputevent.h>
 #include <framework/stdext/types.h>
 #include <framework/stdext/storage.h>
 
@@ -71,8 +70,7 @@ public:
     bool fileExists(std::string file);
     bool removeFile(std::string file);
     ticks_t getFileModificationTime(std::string file);
-    void openUrl(std::string url, bool now = false);
-    void openDir(std::string path, bool now = false);
+    void openUrl(std::string url);
     std::string getCPUName();
     double getTotalSystemMemory();
     std::string getOSName();
@@ -84,7 +82,6 @@ public:
     std::string getDeviceShortName(DeviceType type = DeviceUnknown);
     std::string getOsShortName(OperatingSystem os = OsUnknown);
     std::string traceback(const std::string_view where, int level = 1, int maxDepth = 32);
-    void addKeyListener(std::function<void(const InputEvent&)> listener) {}
 
     static Platform::DeviceType getDeviceTypeByName(std::string shortName);
     static Platform::OperatingSystem getOsByName(std::string shortName);
@@ -92,8 +89,8 @@ public:
 private:
     Device m_device{ Device(Desktop, Windows) };
 
-    static std::unordered_map<Platform::DeviceType, std::string> m_deviceShortNames;
-    static std::unordered_map<Platform::OperatingSystem, std::string> m_osShortNames;
+    static stdext::map<Platform::DeviceType, std::string> m_deviceShortNames;
+    static stdext::map<Platform::OperatingSystem, std::string> m_osShortNames;
 };
 
 extern Platform g_platform;

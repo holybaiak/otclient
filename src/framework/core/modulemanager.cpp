@@ -141,10 +141,12 @@ void ModuleManager::updateModuleLoadOrder(const ModulePtr& module)
 }
 
 void ModuleManager::enableAutoReload() {
-    if (m_reloadEnable)
+    static bool reloadEnable = false;
+
+    if (reloadEnable)
         return;
 
-    m_reloadEnable = true;
+    reloadEnable = true;
 
     struct FileInfo
     {

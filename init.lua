@@ -6,9 +6,15 @@ Services = {
     --updater = "http://localhost/api/updater.php",
 }
 
+ClientHost = {
+    ip = "25.52.58.88/login.php",
+    port = 80,
+    version = 1320
+}
+
 g_app.setName("OTClient - Redemption");
 g_app.setCompactName("otclient");
-g_app.setOrganizationName("otcr");
+g_app.setOrganizationName("otbr");
 
 g_app.hasUpdater = function()
     return (Services.updater and Services.updater ~= "" and g_modules.getModule("updater"))
@@ -23,14 +29,6 @@ g_logger.info("== operating system: " .. g_platform.getOSName())
 g_logger.info(g_app.getName() .. ' ' .. g_app.getVersion() .. ' rev ' .. g_app.getBuildRevision() .. ' (' ..
     g_app.getBuildCommit() .. ') built on ' .. g_app.getBuildDate() .. ' for arch ' ..
     g_app.getBuildArch())
-
--- setup lua debugger
-if os.getenv("LOCAL_LUA_DEBUGGER_VSCODE") == "1" then
-  require("lldebugger").start()
-  g_logger.debug("Started LUA debugger.")
-else
-  g_logger.debug("LUA debugger not started (not launched with VSCode local-lua).")
-end
 
 -- add data directory to the search path
 if not g_resources.addSearchPath(g_resources.getWorkDir() .. 'data', true) then
@@ -73,11 +71,6 @@ local function loadModules()
 
     -- mods 1000-9999
     g_modules.autoLoadModules(9999)
-    g_modules.ensureModuleLoaded('client_mods')
-
-    if not g_game.isEnabledBotProtection() then
-        g_modules.ensureModuleLoaded('game_bot')
-    end
 
     local script = '/' .. g_app.getCompactName() .. 'rc.lua'
 

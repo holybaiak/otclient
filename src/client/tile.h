@@ -95,10 +95,9 @@ public:
     Tile(const Position& position);
 
     LuaObjectPtr attachedObjectToLuaObject() override { return asLuaObject(); }
-    bool isTile() override { return true; }
 
     void onAddInMapView();
-    void draw(const Point& dest, const MapPosInfo& mapRect, int flags, LightView* lightView = nullptr);
+    void draw(const Point& dest, const MapPosInfo& mapRect, int flags, bool isCovered, LightView* lightView = nullptr);
 
     void clean();
 
@@ -119,6 +118,12 @@ public:
     ThingPtr getTopMoveThing();
     ThingPtr getTopMultiUseThing();
 
+    bool hasWidget() const { return m_widget != nullptr; }
+    void drawWidget(const Point& dest, const MapPosInfo& mapRect);
+    void setWidget(const UIWidgetPtr& widget);
+    UIWidgetPtr getWidget() { return m_widget; }
+    void removeWidget();
+
     int getDrawElevation() { return m_drawElevation; }
     const Position& getPosition() { return m_position; }
     const std::vector<CreaturePtr>& getWalkingCreatures() { return m_walkingCreatures; }
@@ -133,7 +138,7 @@ public:
     int getThingCount() { return m_things.size() + m_effects.size(); }
 
     bool isWalkable(bool ignoreCreatures = false);
-    bool isClickable();
+    bool isClickable() { return (hasGround() || hasBottomItem()) && !hasIgnoreLook(); }
     bool isPathable() { return (m_thingTypeFlag & TileThingType::NOT_PATHABLE) == 0; }
     bool isFullGround() { return m_thingTypeFlag & TileThingType::FULL_GROUND; }
     bool isFullyOpaque() { return m_thingTypeFlag & TileThingType::IS_OPAQUE; }
@@ -204,25 +209,15 @@ public:
 
     TilePtr asTile() { return static_self_cast<Tile>(); }
 
-    bool checkForDetachableThing(const TileSelectType selectType = TileSelectType::FILTERED);
-
-#ifndef BOT_PROTECTION
-    void drawTexts(Point dest);
-    void setText(const std::string& text, Color color);
-    std::string getText();
-    void setTimer(int time, Color color);
-    int getTimer();
-    void setFill(Color color);
-    void resetFill() { m_fill = Color::alpha; }
-    bool canShoot(int distance);
-#endif
+    bool checkForDetachableThing();
 private:
     void drawTop(const Point& dest, int flags, bool forceDraw, LightView* lightView = nullptr);
-    void drawCreature(const Point& dest, const MapPosInfo& mapRect, int flags, bool forceDraw, LightView* lightView = nullptr);
+    void drawCreature(const Point& dest, const MapPosInfo& mapRect, int flags, bool isCovered, bool forceDraw, LightView* lightView = nullptr);
     void drawThing(const ThingPtr& thing, const Point& dest, int flags, LightView* lightView);
 
     void setThingFlag(const ThingPtr& thing);
 
+    void updateWidget(const Point& dest, const MapPosInfo& mapRect);
     void recalculateThingFlag()
     {
         m_thingTypeFlag = 0;
@@ -254,15 +249,9 @@ private:
     std::vector<TilePtr> m_tilesRedraw;
 
     ThingPtr m_highlightThing;
+    UIWidgetPtr m_widget;
 
     TileSelectType m_selectType{ TileSelectType::NONE };
 
     bool m_drawTopAndCreature{ true };
-
-#ifndef BOT_PROTECTION
-    ticks_t m_timer = 0;
-    StaticTextPtr m_timerText;
-    StaticTextPtr m_text;
-    Color m_fill = Color::alpha;
-#endif
 };

@@ -37,7 +37,8 @@ enum
 
 enum
 {
-    BLOCK_SIZE = 32
+    BLOCK_SIZE = 32,
+    BLOCK_FACTOR = 1
 };
 
 enum : uint8_t
@@ -217,11 +218,6 @@ public:
     void addAnimatedText(const AnimatedTextPtr& txt, const Position& pos);
     bool removeAnimatedText(const AnimatedTextPtr& txt);
 
-    bool isWidgetAttached(const UIWidgetPtr& widget) const;
-    void addAttachedWidgetToObject(const UIWidgetPtr& widget, const AttachableObjectPtr& object);
-    bool removeAttachedWidgetFromObject(const UIWidgetPtr& widget);
-    void updateAttachedWidgets(const MapViewPtr& mapView);
-
     void colorizeThing(const ThingPtr& thing, const Color& color);
     void removeThingColor(const ThingPtr& thing);
 
@@ -295,21 +291,11 @@ public:
     void setFloatingEffect(bool enable) { m_floatingEffect = enable; }
     bool isDrawingFloatingEffects() { return m_floatingEffect; }
 
-#ifndef BOT_PROTECTION
-    std::map<std::string, std::tuple<int, int, int, std::string>> findEveryPath(const Position& start, int maxDistance, const std::map<std::string, std::string>& params);
-    std::vector<CreaturePtr> getSpectatorsByPattern(const Position& centerPos, const std::string& pattern, Otc::Direction direction);
-#endif
-
-    int getMinimapColor(const Position& pos);
-    bool isSightClear(const Position& fromPos, const Position& toPos);
-
-    const auto& getCreatures() const { return m_knownCreatures; }
-
 private:
     struct FloorData
     {
         std::vector<MissilePtr> missiles;
-        std::unordered_map<uint32_t, TileBlock > tileBlocks;
+        stdext::map<uint32_t, TileBlock > tileBlocks;
     };
 
     void removeUnawareThings();
@@ -322,13 +308,11 @@ private:
     std::vector<StaticTextPtr> m_staticTexts;
     std::vector<MapViewPtr> m_mapViews;
 
-    std::unordered_map<uint32_t, CreaturePtr> m_knownCreatures;
-
-    std::unordered_map<UIWidgetPtr, AttachableObjectPtr> m_attachedObjectWidgetMap;
+    stdext::map<uint32_t, CreaturePtr> m_knownCreatures;
 
 #ifdef FRAMEWORK_EDITOR
-    std::unordered_map<Position, std::string, Position::Hasher> m_waypoints;
-    std::unordered_map<uint32_t, Color> m_zoneColors;
+    stdext::map<Position, std::string, Position::Hasher> m_waypoints;
+    stdext::map<uint32_t, Color> m_zoneColors;
 
     std::string m_houseFile;
     std::string m_spawnFile;

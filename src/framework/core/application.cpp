@@ -21,7 +21,7 @@
  */
 
 #include "application.h"
-
+#include <csignal>
 #include <framework/core/configmanager.h>
 #include <framework/core/eventdispatcher.h>
 #include <framework/core/modulemanager.h>
@@ -29,10 +29,8 @@
 #include <framework/luaengine/luainterface.h>
 #include <framework/platform/crashhandler.h>
 #include <framework/platform/platform.h>
-#include <framework/graphics/drawpoolmanager.h>
 #include "asyncdispatcher.h"
 
-#include <csignal>
 #include <gitinfo.h>
 
 #define ADD_QUOTES_HELPER(s) #s
@@ -58,10 +56,8 @@ void exitSignalHandler(int sig)
     }
 }
 
-void Application::init(std::vector<std::string>& args, ApplicationContext* context)
+void Application::init(std::vector<std::string>& args, uint8_t asyncDispatchMaxThreads)
 {
-    m_context = std::unique_ptr<ApplicationContext>(context);
-
     // capture exit signals
     signal(SIGTERM, exitSignalHandler);
     signal(SIGINT, exitSignalHandler);
@@ -73,10 +69,7 @@ void Application::init(std::vector<std::string>& args, ApplicationContext* conte
     // setup locale
     std::locale::global(std::locale());
 
-    g_asyncDispatcher.init(context->getAsyncDispatchMaxThreads());
-    g_dispatcher.init();
-    g_textDispatcher.init();
-    g_mainDispatcher.init();
+    g_asyncDispatcher.init(asyncDispatchMaxThreads);
 
     std::string startupOptions;
     for (uint32_t i = 1; i < args.size(); ++i) {
@@ -102,6 +95,13 @@ void Application::deinit()
 {
     g_lua.callGlobalField("g_app", "onTerminate");
 
+    // run modules unload events
+    g_modules.unloadModules();
+    g_modules.clear();
+
+    // release remaining lua object references
+    g_lua.collectGarbage();
+
     // poll remaining events
     poll();
     Application::poll();
@@ -109,16 +109,9 @@ void Application::deinit()
     g_asyncDispatcher.terminate();
 
     // disable dispatcher events
-    g_textDispatcher.shutdown();
     g_dispatcher.shutdown();
+    g_textDispatcher.shutdown();
     g_mainDispatcher.shutdown();
-
-    // run modules unload events
-    g_modules.unloadModules();
-    g_modules.clear();
-
-    // release remaining lua object references
-    g_lua.collectGarbage();
 }
 
 void Application::terminate()
@@ -145,17 +138,13 @@ void Application::terminate()
 
 void Application::poll()
 {
-    std::scoped_lock l(g_drawPool.get(DrawPoolType::FOREGROUND_MAP)->getMutexPreDraw());
     g_clock.update();
 
 #ifdef FRAMEWORK_NET
     Connection::poll();
 #endif
 
-    {
-        std::scoped_lock l(g_drawPool.get(DrawPoolType::FOREGROUND)->getMutexPreDraw());
-        g_dispatcher.poll();
-    }
+    g_dispatcher.poll();
 
     // poll connection again to flush pending write
 #ifdef FRAMEWORK_NET

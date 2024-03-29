@@ -36,7 +36,6 @@ public:
 
     bool isCanceled() { return m_canceled; }
     bool isExecuted() { return m_executed; }
-    bool isPending() { return !m_canceled && !m_executed; }
 
 protected:
     std::function<void()> m_callback;

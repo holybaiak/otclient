@@ -20,7 +20,7 @@
  * THE SOFTWARE.
  */
 
-#include "framework/core/application.h"
+#include "framework/core/graphicalapplication.h"
 #if defined(WIN32) && defined(CRASH_HANDLER)
 
 #include <framework/global.h>

@@ -91,9 +91,7 @@ void ParticleType::load(const OTMLNodePtr& node)
         else if (childNode->tag() == "size") {
             pStartSize = childNode->value<Size>();
             pFinalSize = childNode->value<Size>();
-        } else if (childNode->tag() == "random-size-multiplier")
-            pRandomSizeMultiplier = childNode->value<PointF>();
-        else if (childNode->tag() == "start-size")
+        } else if (childNode->tag() == "start-size")
             pStartSize = childNode->value<Size>();
         else if (childNode->tag() == "final-size")
             pFinalSize = childNode->value<Size>();
@@ -102,14 +100,8 @@ void ParticleType::load(const OTMLNodePtr& node)
             pColors = stdext::split<Color>(childNode->value());
         else if (childNode->tag() == "colors-stops")
             pColorsStops = stdext::split<float>(childNode->value());
-        else if (childNode->tag() == "texture") {
-            const auto& texture = g_textures.getTexture(childNode->value());
-            pTexture = texture;
-
-            if (texture && texture->isAnimatedTexture())
-                pAnimatedTexture = std::static_pointer_cast<AnimatedTexture>(texture);
-        }
-
+        else if (childNode->tag() == "texture")
+            pTexture = g_textures.getTexture(childNode->value());
         else if (childNode->tag() == "composition-mode") {
             if (childNode->value() == "normal")
                 pCompositionMode = CompositionMode::NORMAL;

@@ -22,53 +22,18 @@
 
 #pragma once
 
-#include "application.h"
-
-#include <framework/graphics/declarations.h>
 #include <framework/core/adaptativeframecounter.h>
 #include <framework/core/inputevent.h>
 #include <framework/core/timer.h>
+#include <framework/graphics/declarations.h>
 #include <framework/platform/platformwindow.h>
 
-class ApplicationDrawEvents
-{
-protected:
-    virtual void preLoad() = 0;
-    virtual void drawMap() = 0;
-    virtual void drawForgroundMap() = 0;
-
-    virtual bool canDraw(DrawPoolType type) const = 0;
-    virtual bool isLoadingAsyncTexture() = 0;
-    virtual bool isUsingProtobuf() = 0;
-    virtual void onLoadingAsyncTextureChanged(bool loadingAsync) = 0;
-
-    friend class GraphicalApplication;
-};
-
-class GraphicalApplicationContext : public ApplicationContext
-{
-public:
-    GraphicalApplicationContext(uint8_t asyncDispatchMaxThreads, uint8_t spriteSize, ApplicationDrawEventsPtr drawEvents) :
-        ApplicationContext(asyncDispatchMaxThreads),
-        m_spriteSize(spriteSize),
-        m_drawEvents(drawEvents)
-    {}
-
-    void setSpriteSize(uint8_t size) { m_spriteSize = size; }
-    uint8_t getSpriteSize() { return m_spriteSize; }
-
-    void setDrawEvents(ApplicationDrawEventsPtr drawEvents) { m_drawEvents = drawEvents; }
-    ApplicationDrawEventsPtr getDrawEvents() { return m_drawEvents; }
-
-protected:
-    uint8_t m_spriteSize;
-    ApplicationDrawEventsPtr m_drawEvents;
-};
+#include "application.h"
 
 class GraphicalApplication : public Application
 {
 public:
-    void init(std::vector<std::string>& args, ApplicationContext* context) override;
+    void init(std::vector<std::string>& args, uint8_t asyncDispatchMaxThreads = 0) override;
     void deinit() override;
     void terminate() override;
     void run() override;
@@ -76,14 +41,14 @@ public:
     void mainPoll();
     void close() override;
 
-    void setMaxFps(uint16_t maxFps) { m_graphicFrameCounter.setMaxFps(maxFps); }
-    void setTargetFps(uint16_t targetFps) { m_graphicFrameCounter.setTargetFps(targetFps); }
+    void setMaxFps(uint16_t maxFps) { m_frameCounter.setMaxFps(maxFps); }
+    void setTargetFps(uint16_t targetFps) { m_frameCounter.setTargetFps(targetFps); }
 
-    uint16_t getFps() { return m_graphicFrameCounter.getFps(); }
-    uint8_t getMaxFps() { return m_graphicFrameCounter.getMaxFps(); }
-    uint8_t getTargetFps() { return m_graphicFrameCounter.getTargetFps(); }
+    uint16_t getFps() { return m_frameCounter.getFps(); }
+    uint8_t getMaxFps() { return m_frameCounter.getMaxFps(); }
+    uint8_t getTargetFps() { return m_frameCounter.getTargetFps(); }
 
-    void resetTargetFps() { m_graphicFrameCounter.resetTargetFps(); }
+    void resetTargetFps() { m_frameCounter.resetTargetFps(); }
 
     bool isOnInputEvent() { return m_onInputEvent; }
     bool mustOptimize() {
@@ -129,13 +94,13 @@ public:
     void repaint();
     void repaintMap();
 
-    void setDrawEvents(const ApplicationDrawEventsPtr& drawEvents) { m_drawEvents = drawEvents; }
-
 protected:
     void resize(const Size& size);
     void inputEvent(const InputEvent& event);
 
 private:
+    bool canDrawTexts() const;
+
     bool m_onInputEvent{ false };
     bool m_optimize{ true };
     bool m_forceEffectOptimization{ false };
@@ -147,10 +112,7 @@ private:
     float m_animatedTextScale{ PlatformWindow::DEFAULT_DISPLAY_DENSITY };
     float m_staticTextScale{ PlatformWindow::DEFAULT_DISPLAY_DENSITY };
 
-    AdaptativeFrameCounter m_mapProcessFrameCounter;
-    AdaptativeFrameCounter m_graphicFrameCounter;
-
-    ApplicationDrawEventsPtr m_drawEvents;
+    AdaptativeFrameCounter m_frameCounter;
 };
 
 extern GraphicalApplication g_app;

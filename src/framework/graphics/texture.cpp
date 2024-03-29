@@ -102,7 +102,7 @@ void Texture::uploadPixels(const ImagePtr& image, bool buildMipmaps, bool compre
     setupFilters();
 }
 
-void Texture::bind() { if (m_id) glBindTexture(GL_TEXTURE_2D, m_id); }
+void Texture::bind() { glBindTexture(GL_TEXTURE_2D, m_id); }
 
 void Texture::buildHardwareMipmaps()
 {
@@ -191,8 +191,6 @@ void Texture::setupWrap() const
 
 void Texture::setupFilters() const
 {
-    if (!m_id) return;
-
     GLenum minFilter;
     GLenum magFilter;
     if (getProp(Prop::smooth)) {

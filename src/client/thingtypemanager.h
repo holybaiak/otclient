@@ -57,6 +57,9 @@ public:
     ItemTypeList findItemTypesByString(const std::string& name);
     const ItemTypePtr& getNullItemType() { return m_nullItemType; }
     const ItemTypePtr& getItemType(uint16_t id);
+    ItemType* rawGetItemType(uint16_t id) {
+        return m_itemTypes[id].get();
+}
 
     ItemTypeList findItemTypeByCategory(ItemCategory category);
 #endif
@@ -69,6 +72,10 @@ public:
 
     const ThingTypeList& getThingTypes(ThingCategory category);
 
+    ThingType* rawGetThingType(uint16_t id, ThingCategory category) {
+        return m_thingTypes[category][id].get(); 
+    }
+    
     uint32_t getDatSignature() { return m_datSignature; }
     uint16_t getContentRevision() { return m_contentRevision; }
 

@@ -76,7 +76,6 @@ public:
 
     std::string guessFilePath(const std::string& filename, const std::string& type);
     bool isFileType(const std::string& filename, const std::string& type);
-    std::string getFileName(const std::string& filePath);
     ticks_t getFileTime(const std::string& filename);
 
     std::string encrypt(const std::string& data, const std::string& password);
@@ -86,13 +85,11 @@ public:
     void save_string_into_file(const std::string& contents, const std::string& name);
 
     std::string fileChecksum(const std::string& path);
-    std::unordered_map<std::string, std::string> filesChecksums();
+    stdext::map<std::string, std::string> filesChecksums();
     std::string selfChecksum();
     void updateFiles(const std::set<std::string>& files);
     void updateExecutable(std::string fileName);
     bool launchCorrect(std::vector<std::string>& args);
-    std::string createArchive(const std::unordered_map<std::string, std::string>& files);
-    std::unordered_map<std::string, std::string> decompressArchive(std::string dataOrPath);
 
     std::string getBinaryPath() { return m_binaryPath.string(); }
 

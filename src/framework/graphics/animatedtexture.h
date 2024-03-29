@@ -32,9 +32,7 @@ public:
     ~AnimatedTexture() override = default;
 
     TexturePtr get(uint32_t& frame, Timer& timer);
-    TexturePtr getCurrentFrame();
 
-    Texture* create() override;
     void buildHardwareMipmaps() override;
 
     void setSmooth(bool smooth) override;

@@ -542,8 +542,12 @@ namespace Otc
         GameWrapKit = 112,
         GameContainerFilter = 113,
         GameEnterGameShowAppearance = 114,
-        GameSmoothWalkElevation = 115,
-        LastGameFeature = 116
+        GameWingsAndAura = 115,
+        GameWingOffset = 116,
+        GameDrawAuraOnTop = 117,
+        GameAuraFrontAndBack = 118,
+        GameBigAurasCenter = 119,
+        LastGameFeature = 119
     };
 
     enum MagicEffectsType_t : uint8_t
@@ -714,13 +718,5 @@ namespace Otc
         OFFER_STATE_EXPIRED = 2,
         OFFER_STATE_ACCEPTED = 3,
         OFFER_STATE_ACCEPTEDEX = 255
-    };
-
-    enum Supply_Stash_Actions_t : uint8_t
-    {
-        SUPPLY_STASH_ACTION_STOW_ITEM = 0,
-        SUPPLY_STASH_ACTION_STOW_CONTAINER = 1,
-        SUPPLY_STASH_ACTION_STOW_STACK = 2,
-        SUPPLY_STASH_ACTION_WITHDRAW = 3
     };
 }

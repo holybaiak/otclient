@@ -25,7 +25,6 @@
 #include <framework/core/graphicalapplication.h>
 #include "game.h"
 #include "map.h"
-#include <client/client.h>
 
 void Effect::draw(const Point& dest, bool drawThings, LightView* lightView)
 {
@@ -74,8 +73,6 @@ void Effect::draw(const Point& dest, bool drawThings, LightView* lightView)
         m_drawConductor.order = DrawOrder::FOURTH;
     }
 
-    if (drawThings &&  g_client.getEffectAlpha() < 1.f)
-        g_drawPool.setOpacity(g_client.getEffectAlpha(), true);
     getThingType()->draw(dest, 0, xPattern, yPattern, 0, animationPhase, Color::white, drawThings, lightView, m_drawConductor);
 }
 
@@ -122,7 +119,7 @@ bool Effect::waitFor(const EffectPtr& effect)
 void Effect::setId(uint32_t id)
 {
     if (!g_things.isValidDatId(id, ThingCategoryEffect))
-        return;
+        id = 0;
 
     m_clientId = id;
     m_thingType = g_things.getThingType(id, ThingCategoryEffect).get();
@@ -130,9 +127,6 @@ void Effect::setId(uint32_t id)
 
 void Effect::setPosition(const Position& position, uint8_t stackPos, bool hasElevation)
 {
-    if (m_clientId == 0)
-        return;
-
     Thing::setPosition(position, stackPos, hasElevation);
 
     m_numPatternX = m_position.x % getNumPatternX();

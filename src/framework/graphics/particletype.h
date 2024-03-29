@@ -23,7 +23,6 @@
 #pragma once
 
 #include <framework/graphics/painter.h>
-#include <framework/graphics/animatedtexture.h>
 #include <framework/luaengine/luaobject.h>
 #include <framework/otml/otml.h>
 #include "declarations.h"
@@ -43,7 +42,6 @@ protected:
     std::vector<Color> pColors;
     std::vector<float> pColorsStops;
     TexturePtr pTexture;
-    AnimatedTexturePtr pAnimatedTexture;
     ParticleTypePtr particleType;
     CompositionMode pCompositionMode{ CompositionMode::NORMAL };
 
@@ -51,7 +49,6 @@ protected:
     // size
     Size pStartSize{ 32 };
     Size pFinalSize{ 32 };
-    PointF pRandomSizeMultiplier{ 1 };
 
     // initial position related to emitter position
     float pMinPositionRadius{ 0 };

@@ -21,9 +21,6 @@
  */
 
 #include <client/client.h>
-#include <client/game.h>
-#include <client/localplayer.h>
-#include <client/gameconfig.h>
 #include <framework/core/application.h>
 #include <framework/core/resourcemanager.h>
 #include <framework/luaengine/luainterface.h>
@@ -36,10 +33,6 @@
 
 #ifdef FRAMEWORK_NET
 #include <framework/net/protocolhttp.h>
-#endif
-
-#ifdef ANDROID
-extern "C" {
 #endif
 
 int main(int argc, const char* argv[])
@@ -80,27 +73,12 @@ int main(int argc, const char* argv[])
 
 #ifndef ANDROID
     #if ENABLE_DISCORD_RPC == 1
-    std::function<bool()> canUpdate = []() -> bool { return g_game.isOnline(); };
-    std::function<void(std::string&)> onUpdate = [](std::string& info) {
-#if SHOW_CHARACTER_NAME_RPC == 1
-        info = "Name: " + g_game.getCharacterName();
-#endif
-#if SHOW_CHARACTER_LEVEL_RPC == 1
-        const auto& level = std::to_string(g_game.getLocalPlayer()->getLevel());
-        info += info.empty() ? "Level: " + level : "[" + level + "]";
-#endif
-#if SHOW_CHARACTER_WORLD_RPC == 1
-        if (!info.empty()) info += "\n";
-        info += "World: " + g_game.getWorldName();
-#endif
-    };
-    g_discord.init(canUpdate, onUpdate);
+        g_discord.init();
     #endif
 #endif
 
     // initialize application framework and otclient
-    g_app.init(args, new GraphicalApplicationContext(
-        (uint8_t)ASYNC_DISPATCHER_MAX_THREAD, g_gameConfig.getSpriteSize(), ApplicationDrawEventsPtr(&g_client)));
+    g_app.init(args, ASYNC_DISPATCHER_MAX_THREAD);
     g_client.init(args);
 #ifdef FRAMEWORK_NET
     g_http.init();
@@ -116,13 +94,10 @@ int main(int argc, const char* argv[])
     g_app.deinit();
 
     // terminate everything and free memory
-    g_client.terminate();
+    Client::terminate();
     g_app.terminate();
 #ifdef FRAMEWORK_NET
     g_http.terminate();
 #endif
     return 0;
-}
-#ifdef ANDROID
-}
-#endif
+    }

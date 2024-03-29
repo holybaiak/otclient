@@ -23,6 +23,7 @@
 #ifdef WIN32
 
 #include "win32window.h"
+#include <client/map.h>
 #include <framework/core/application.h>
 #include <framework/core/eventdispatcher.h>
 #include <framework/core/resourcemanager.h>
@@ -580,7 +581,7 @@ LRESULT WIN32Window::windowProc(HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM 
         m_inputEvent.keyboardModifiers |= Fw::KeyboardAltModifier;
 #endif
 
-    bool signalKeyEvent = false;
+    bool notificateMapKeyEvent = false;
     switch (uMsg) {
         case WM_SETCURSOR:
         {
@@ -619,19 +620,19 @@ LRESULT WIN32Window::windowProc(HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM 
         }
         case WM_KEYDOWN:
         {
-            signalKeyEvent = true;
+            notificateMapKeyEvent = true;
             processKeyDown(retranslateVirtualKey(wParam, lParam));
             break;
         }
         case WM_KEYUP:
         {
-            signalKeyEvent = true;
+            notificateMapKeyEvent = true;
             processKeyUp(retranslateVirtualKey(wParam, lParam));
             break;
         }
         case WM_SYSKEYUP:
         {
-            signalKeyEvent = true;
+            notificateMapKeyEvent = true;
             processKeyUp(retranslateVirtualKey(wParam, lParam));
             break;
         }
@@ -640,7 +641,7 @@ LRESULT WIN32Window::windowProc(HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM 
             if (wParam == VK_F4 && m_inputEvent.keyboardModifiers & Fw::KeyboardAltModifier)
                 return DefWindowProc(hWnd, uMsg, wParam, lParam);
 
-            signalKeyEvent = true;
+            notificateMapKeyEvent = true;
             processKeyDown(retranslateVirtualKey(wParam, lParam));
             break;
         }
@@ -815,9 +816,8 @@ LRESULT WIN32Window::windowProc(HWND hWnd, uint32_t uMsg, WPARAM wParam, LPARAM 
             return DefWindowProc(hWnd, uMsg, wParam, lParam);
     }
 
-    if (m_inputEvent.keyboardModifiers || signalKeyEvent) {
-        for (auto& keyListener : m_keyListeners)
-            keyListener(m_inputEvent);
+    if (m_inputEvent.keyboardModifiers || notificateMapKeyEvent) {
+        g_map.notificateKeyRelease(m_inputEvent);
     }
 
     return 0;
@@ -936,9 +936,8 @@ void WIN32Window::setFullscreen(bool fullscreen)
 
 void WIN32Window::setVerticalSync(bool enable)
 {
-    m_vsync = enable;
-
-    g_mainDispatcher.addEvent([this, enable] {
+    g_mainDispatcher.addEvent([&, enable] {
+        m_vsync = enable;
 #ifdef OPENGL_ES
         eglSwapInterval(m_eglDisplay, enable);
 #else

@@ -24,8 +24,8 @@
 #include "fontmanager.h"
 
 #include <framework/platform/platformwindow.h>
+#include "framebuffermanager.h"
 #include "texturemanager.h"
-#include "painter.h"
 
 Graphics g_graphics;
 
@@ -77,16 +77,20 @@ void Graphics::init()
 
     m_ok = true;
 
-    g_painter = std::make_unique<Painter>();
+    g_painter = new Painter;
 
     g_textures.init();
+    g_framebuffers.init();
 }
 
 void Graphics::terminate()
 {
-    g_painter = nullptr;
     g_fonts.terminate();
+    g_framebuffers.terminate();
     g_textures.terminate();
+
+    delete g_painter;
+    g_painter = nullptr;
 
     m_ok = false;
 }

@@ -26,7 +26,7 @@
 #include <framework/ui/declarations.h>
 #include "global.h"
 
-// core
+ // core
 class Map;
 class Game;
 class MapView;
@@ -49,7 +49,6 @@ class ThingType;
 class ItemType;
 class TileBlock;
 class AttachedEffect;
-class AttachableObject;
 
 #ifdef FRAMEWORK_EDITOR
 class House;
@@ -76,7 +75,6 @@ using StaticTextPtr = std::shared_ptr<StaticText>;
 using ThingTypePtr = std::shared_ptr<ThingType>;
 using ItemTypePtr = std::shared_ptr<ItemType>;
 using AttachedEffectPtr = std::shared_ptr<AttachedEffect>;
-using AttachableObjectPtr = std::shared_ptr<AttachableObject>;
 
 #ifdef FRAMEWORK_EDITOR
 using HousePtr = std::shared_ptr<House>;
@@ -86,8 +84,8 @@ using SpawnPtr = std::shared_ptr<Spawn>;
 
 using HouseList = std::list<HousePtr>;
 using TownList = std::list<TownPtr>;
-using CreatureMap = std::unordered_map<Position, CreatureTypePtr, Position::Hasher>;
-using SpawnMap = std::unordered_map<Position, SpawnPtr, Position::Hasher>;
+using CreatureMap = stdext::map<Position, CreatureTypePtr, Position::Hasher>;
+using SpawnMap = stdext::map<Position, SpawnPtr, Position::Hasher>;
 #endif
 
 using ThingList = std::vector<ThingPtr>;
@@ -97,6 +95,7 @@ using ItemTypeList = std::vector<ItemTypePtr>;
 using TileList = std::list<TilePtr>;
 using ItemVector = std::vector<ItemPtr>;
 
+using ItemMap = stdext::map<Position, ItemPtr, Position::Hasher>;
 using TileMap = stdext::map<Position, TilePtr, Position::Hasher>;
 
 // net
@@ -109,7 +108,6 @@ using ProtocolLoginPtr = std::shared_ptr<ProtocolLogin>;
 // ui
 class UIItem;
 class UICreature;
-class UIGraph;
 class UIMap;
 class UIMinimap;
 class UIProgressRect;
@@ -119,7 +117,6 @@ class UISprite;
 
 using UIItemPtr = std::shared_ptr<UIItem>;
 using UICreaturePtr = std::shared_ptr<UICreature>;
-using UIGraphPtr = std::shared_ptr<UIGraph>;
 using UISpritePtr = std::shared_ptr<UISprite>;
 using UIMapPtr = std::shared_ptr<UIMap>;
 using UIMinimapPtr = std::shared_ptr<UIMinimap>;

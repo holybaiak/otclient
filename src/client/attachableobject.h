@@ -28,20 +28,14 @@ class AttachableObject : public LuaObject
 {
 public:
     AttachableObject() = default;
-    virtual ~AttachableObject();
-
-    virtual LuaObjectPtr attachedObjectToLuaObject() = 0;
-    virtual bool isTile() { return false; }
-    virtual bool isThing() { return false; }
-
+    virtual ~AttachableObject() = default;
+    
     void attachEffect(const AttachedEffectPtr& obj);
     void clearAttachedEffects();
-    void clearTemporaryAttachedEffects();
-    void clearPermanentAttachedEffects();
     bool detachEffectById(uint16_t id);
-    bool detachEffect(const AttachedEffectPtr& obj);
     AttachedEffectPtr getAttachedEffectById(uint16_t id);
 
+    virtual LuaObjectPtr attachedObjectToLuaObject() = 0;
     virtual void onStartAttachEffect(const AttachedEffectPtr& effect) { };
     virtual void onDispatcherAttachEffect(const AttachedEffectPtr& effect) { };
     virtual void onStartDetachEffect(const AttachedEffectPtr& effect) { };
@@ -50,27 +44,10 @@ public:
 
     const std::vector<AttachedEffectPtr>& getAttachedEffects() { return m_attachedEffects; };
 
-    void attachParticleEffect(const std::string& name);
-    void clearAttachedParticlesEffect();
-    bool detachParticleEffectByName(const std::string& name);
-    void updateAndAttachParticlesEffects(std::vector<std::string>& newElements);
-
-    const std::vector<UIWidgetPtr>& getAttachedWidgets() { return m_attachedWidgets; };
-    bool hasAttachedWidgets() { return !m_attachedWidgets.empty(); };
-    bool isWidgetAttached(const UIWidgetPtr& widget);
-    void attachWidget(const UIWidgetPtr& widget);
-    void clearAttachedWidgets();
-    bool detachWidgetById(const std::string& id);
-    bool detachWidget(const UIWidgetPtr& widget);
-    UIWidgetPtr getAttachedWidgetById(const std::string& id);
-
 protected:
     void drawAttachedEffect(const Point& dest, LightView* lightView, bool isOnTop);
     void onDetachEffect(const AttachedEffectPtr& effect);
-    void drawAttachedParticlesEffect(const Point& dest);
 
     std::vector<AttachedEffectPtr> m_attachedEffects;
-    std::vector<ParticleEffectPtr> m_attachedParticles;
-    std::vector<UIWidgetPtr> m_attachedWidgets;
     uint8_t m_ownerHidden{ 0 };
 };

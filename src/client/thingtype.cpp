@@ -43,8 +43,6 @@ void ThingType::unserializeAppearance(uint16_t clientId, ThingCategory category,
     m_null = false;
     m_id = clientId;
     m_category = category;
-    m_name = appearance.name();
-    m_description = appearance.description();
 
     const appearances::AppearanceFlags& flags = appearance.flags();
 
@@ -198,7 +196,7 @@ void ThingType::unserializeAppearance(uint16_t clientId, ThingCategory category,
         m_market.category = static_cast<ITEM_CATEGORY>(flags.market().category());
         m_market.tradeAs = flags.market().trade_as_object_id();
         m_market.showAs = flags.market().show_as_object_id();
-        m_market.name = m_name;
+        m_market.name = flags.market().name();
 
         for (const int32_t voc : flags.market().restrict_to_profession()) {
             m_market.restrictVocation |= voc;
@@ -605,20 +603,6 @@ void ThingType::unserializeOtml(const OTMLNodePtr& node)
     }
 }
 
-void ThingType::drawWithFrameBuffer(const TexturePtr& texture, const Rect& screenRect, const Rect& textureRect, const Color& color, const DrawConductor& conductor) {
-    const int size = static_cast<int>(g_gameConfig.getSpriteSize() * std::max<int>(m_size.area(), 2) * g_drawPool.getScaleFactor());
-    const auto& p = (Point(size) - screenRect.size().toPoint()) / 2;
-    const auto& destDiff = Rect(screenRect.topLeft() - p, Size{ size });
-
-    g_drawPool.bindFrameBuffer(destDiff.size()); {
-        // Debug
-        // g_drawPool.addBoundingRect(Rect(Point(0), destDiff.size()), Color::red);
-
-        g_drawPool.addTexturedRect(Rect(p, screenRect.size()), texture, textureRect, color, conductor);
-    } g_drawPool.releaseFrameBuffer(destDiff);
-    g_drawPool.resetShaderProgram();
-}
-
 void ThingType::draw(const Point& dest, int layer, int xPattern, int yPattern, int zPattern, int animationPhase, const Color& color, bool drawThings, LightView* lightView, const DrawConductor& conductor)
 {
     if (m_null)
@@ -644,11 +628,7 @@ void ThingType::draw(const Point& dest, int layer, int xPattern, int yPattern, i
 
     if (drawThings) {
         const auto& newColor = m_opacity < 1.0f ? Color(color, m_opacity) : color;
-
-        if (g_drawPool.shaderNeedFramebuffer())
-            drawWithFrameBuffer(texture, screenRect, textureRect, newColor, conductor);
-        else
-            g_drawPool.addTexturedRect(screenRect, texture, textureRect, newColor, conductor);
+        g_drawPool.addTexturedRect(screenRect, texture, textureRect, newColor, conductor);
     }
 
     if (lightView && hasLight()) {

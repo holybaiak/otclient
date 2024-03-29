@@ -24,18 +24,16 @@
 
 #include "declarations.h"
 #include "painter.h"
-#include <framework/core/timer.h>
 
 class Particle
 {
 public:
     Particle(const Point& pos, const Size& startSize, const Size& finalSize, const PointF& velocity,
                        const PointF& acceleration, float duration, float ignorePhysicsAfter, const std::vector<Color>& colors,
-                       const std::vector<float>& colorsStops, CompositionMode compositionMode, const TexturePtr& texture, const AnimatedTexturePtr& animatedTexture) :
+                       const std::vector<float>& colorsStops, CompositionMode compositionMode, const TexturePtr& texture) :
         m_colors(colors), m_colorsStops(colorsStops), m_texture(texture), m_position(PointF(pos.x, pos.y)),
         m_velocity(velocity), m_acceleration(acceleration), m_startSize(startSize), m_finalSize(finalSize),
-        m_compositionMode(compositionMode), m_duration(duration), m_ignorePhysicsAfter(ignorePhysicsAfter),
-        m_animatedTexture(animatedTexture)
+        m_compositionMode(compositionMode), m_duration(duration), m_ignorePhysicsAfter(ignorePhysicsAfter)
     {}
 
     void render() const;
@@ -58,7 +56,6 @@ private:
     std::vector<Color> m_colors;
     std::vector<float> m_colorsStops;
     TexturePtr m_texture;
-    AnimatedTexturePtr m_animatedTexture;
     PointF m_position;
     PointF m_velocity;
     PointF m_acceleration;
@@ -71,7 +68,4 @@ private:
     float m_ignorePhysicsAfter;
     float m_elapsedTime{ 0 };
     bool m_finished{ false };
-
-    uint32_t m_frame{ 0 };
-    Timer m_animationTimer;
 };
